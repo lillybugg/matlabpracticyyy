@@ -1,0 +1,7 @@
+clear all
+f(1)=24000;
+lastn=73;
+for i=1:lastn
+f(i+1)=f(i)+.02*f(i)-600;
+end
+f(lastn) 
