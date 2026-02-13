@@ -1,0 +1,15 @@
+clear all
+p(1)=50;
+lastn=100;
+for t=1:lastn
+    p(t+1)=p(t)-0.4*p(t)+10*(t-1);
+    if p(t+1)>= 2000
+        p(t+1)=p(t+1)-0.98*p(t);
+    end
+end
+p(lastn)
+
+time=0:lastn
+plot(time,p,'*','LineWidth',2)
+hold on
+plot(time,p,'LineWidth',2) 
