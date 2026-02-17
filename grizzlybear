@@ -1,0 +1,11 @@
+clear all
+g(1)=197; g(2)=214;
+lastn=101;
+for t=1:lastn
+    g(t+1)=g(t)+0.0865*g(t)
+end
+g(lastn)
+time=0:lastn
+plot(time,g,'*','LineWidth',2)
+hold on
+plot(time,g,'LineWidth',2) 
