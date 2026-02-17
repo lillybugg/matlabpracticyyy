@@ -1,11 +1,11 @@
 clear all
-g(1)=197; g(2)=214;
-lastn=101;
+g(1)=197;
+lastn=100000;
+
 for t=1:lastn
-    g(t+1)=g(t)+0.01*g(t)
+    g(t+1)=g(t)+0.01*g(t);
 end
-g(lastn)
-time=0:lastn
-plot(time,g,'*','LineWidth',2)
-hold on
-plot(time,g,'LineWidth',2) 
+
+t_value = find(g >= 416, 1);
+year = t_value - 1; %explains what g(t+1) is
+disp(year) %displays year (t) not population
