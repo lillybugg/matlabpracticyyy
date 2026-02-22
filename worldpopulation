@@ -1,0 +1,14 @@
+%code for world population (optimistic point of view)
+clear all
+
+r = 0.0085;       % yearly growth rate
+K = 4e10;         % carrying capacity (40 billion)
+P0 = 8.1e9;       % current population
+
+f = @(t,P) r*P*(1 - P/K); %@ means function handle. you need for ODE's
+
+[t,P] = ode45(f,[0 50],P0); %ordinary differantial equation. 45 4th/5th order. 
+%Use f start at 0 end at 50. start with pop p0
+
+plot(t,P)
+title('Logistic Model of World Population')
