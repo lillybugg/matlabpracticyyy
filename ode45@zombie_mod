@@ -1,0 +1,28 @@
+%refer to handwritten notes for more details
+clear all
+global b d n  gamma m 
+
+b=0.018;
+d=0.4;
+n=0.014;
+gamma=2;
+m=0.2;
+
+t0=0; % start time
+tf=60; %end time
+p0=[8*10^9; 0; 20; 0] %vector initial population
+
+[t,p] = ode45(@zombie_mod,[t0,tf],p0);  %call the ode solver 
+plot(t,p(:,1),t,p(:,2),t,p(:,3),t,p(:,4), 'Linewidth',2) % p is SIZD sus,infected,zombie,death
+xlabel('time')
+ylabel('population')
+
+function pprime = zombie_mod(t,p)  %this is the function that defines the ode to be solved
+global b d n gamma m
+S=p(1); I=p(2); Z=p(3); D=p(4); % SIZD sus, inf, zomb, death
+dS=b*S-n*S-d*S*Z;
+dI=d*S*Z-gamma*I;
+dZ=gamma*I-m*S*Z;
+dD=m*S*Z+n*S
+pprime = [dS;dI;dR]; %right side of the ode
+end
