@@ -1,0 +1,18 @@
+%Solve numerically the logistic differential equation dpdt = 0.8p(t)(1 − p(t)1000 ), with
+%initial conditions p(0) = 20, p(0) = 100, p(0) = 1200, and plot the results.
+
+clear all
+global r m
+r=-0.8; %per capita growth rate
+m=50; %immigration rate
+t0=0; % start time
+tf=50; %end time
+p0=1200; %initial population
+[t,p] = ode45(@pop_mod,[t0,tf],p0); %call the ode solver
+plot(t,p) % plot solution
+xlabel('time')
+ylabel('population')
+function pprime = pop_mod(t,p) %this is the function that defines the ode to be
+global r m
+pprime = r*p+m; %right side of the ode
+end
