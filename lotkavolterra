@@ -1,0 +1,47 @@
+%Exercise 3.2 : Solve the Lotka-Volterra predator-prey model 3 SOLVING SYSTEMS OF DIFFERENTIAL EQUATIONS 6
+%dn1 dt = rn1(t) − acn1(t)n2(t)dn2 dt = εacn1(t)n2(t) − δn2(t) (4)
+%using the parameters r = 2, a = 1, c = 0.5, δ = 0.5, ε = 1. Use initial conditions n1(0) =
+%0.5, n2(0) = 3. Plot solutions as functions of time on [0, 20] and on the (n1, n2) phase plane as
+%well. If the phase plane plots do not look like closed curves, you can manipulate the step-size
+%the ode solver takes by using options. E.g., set options=odeset(’MaxStep’,tf/3000);
+%[t,v]=ode45(@lotvol,[0 20],v0,options);
+
+clear all
+global r1 r2 K1 K2 alpha12 alpha21
+r1=0.5; r2=0.3; K1=1000; K2=2000; alpha12=0.2; alpha21=0.1; % values of the
+parameters
+t0=0; % initial time
+tf=30; % end time
+v0=[100;250]; % initial conditions for the variables (column vector)
+[t,v]=ode45(@competition,[t0 tf],v0); % solve the system
+figure(1) % plot each component as a function of time using subplot
+subplot(2,1,1)
+plot(t,v(:,1))
+xlabel('time'); ylabel('p1')
+subplot(2,1,2)
+plot(t,v(:,2))
+xlabel('time'); ylabel('p2')
+%alternatively, you can plot each component on one figure
+figure(2)
+plot(t,v(:,1),'r',t,v(:,2),'b')
+legend('p1','p2')
+xlabel('time');
+ylabel('population size')
+% we can also plot one population versus the other (phase plane plot)
+figure(3)
+plot(v(:,1),v(:,2))
+xlabel('p1')
+ylabel('p2')
+function vprime = competition(t,v)
+% this function computes the derivatives involved in solving the competition model.
+% v is the vector [p1 p2]
+global r1 r2 K1 K2 alpha12 alpha21 % parameters are defined as global variables
+p1=v(1); p2=v(2); % components of v correspond to the variables p1 and p2
+dp1=r1*p1*(1-(p1+alpha12*p2)/K1); % first equation
+dp2=r2*p2*(1-(p2+alpha21*p1)/K2); % second equation
+vprime=[dp1; dp2]; %this has to be column vector
+end
+%%%%%
+% the above three lines could be replaced by just one:
+%vprime=[r1*v(1)*(1-(v(1)+alpha12*v(2))/K1);r2*v(2)*(1-(v(2)+alpha21*v(1))/K2) ];
+% this works and it is efficient, but not transparent, so harder to chec
