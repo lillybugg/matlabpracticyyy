@@ -1,18 +1,50 @@
-%Solve numerically the logistic differential equation dpdt = 0.8p(t)(1 − p(t)1000 ), with
-%initial conditions p(0) = 20, p(0) = 100, p(0) = 1200, and plot the results.
+%Exercise 3.2 : Solve the Lotka-Volterra predator-prey model (in lab)
+%using the parameters r = 2, a = 1, c = 0.5, δ = 0.5, ε = 1. 
+%Use initial conditions n1(0) = 0.5, n2(0) = 3. 
+%Plot solutions as functions of time on [0, 20] and on the (n1, n2) phase plane as well. 
+%If the phase plane plots do not look like closed curves, you can manipulate the step-size
+%the ode solver takes by using options. E.g., set options=odeset('MaxStep',tf/3000);
+%[t,v]=ode45(@lotvol,[0 20],v0,options);
 
 clear all
-global r m
-r=-0.8; %per capita growth rate
-m=50; %immigration rate
-t0=0; % start time
-tf=50; %end time
-p0=1200; %initial population
-[t,p] = ode45(@pop_mod,[t0,tf],p0); %call the ode solver
-plot(t,p) % plot solution
-xlabel('time')
-ylabel('population')
-function pprime = pop_mod(t,p) %this is the function that defines the ode to be
-global r m
-pprime = r*p+m; %right side of the ode
+global r a c delta epsilon
+r=2; a=1; c=0.5; delta=0.5; epsilon=1; % values of the parameters
+n0=0.05; % initial time
+n1=3; % initial time
+nf=20; % end time
+v0=[0.5;3]; % initial conditions for the variables (column vector)
+[t,v]=ode45(@competition,[0 nf],v0); % solve the system
+
+figure(1) % plot each component as a function of time using subplot
+subplot(2,1,1)
+plot(t,v(:,1))
+xlabel('time'); ylabel('p1')
+subplot(2,1,2)
+plot(t,v(:,2))
+xlabel('time'); ylabel('p2')
+%alternatively, you can plot each component on one figure
+figure(2)
+plot(t,v(:,1),'r',t,v(:,2),'b')
+legend('p1','p2')
+xlabel('time');
+ylabel('population size')
+% we can also plot one population versus the other (phase plane plot)
+figure(3)
+plot(v(:,1),v(:,2))
+xlabel('p1')
+ylabel('p2')
+function vprime = competition(n,v)
+% this function computes the derivatives involved in solving the competition model.
+% v is the vector [p1 p2]
+
+global r a c delta epsilon % parameters are defined as global variables
+p1=v(1); p2=v(2); % components of v correspond to the variables p1 and p2
+dp1 = r*p1 - a*p1*p2; % first equation dn0/dt
+dp2 = epsilon*a*p1*p2 - delta*p2; % second equation dn1/dt
+vprime=[dp1; dp2]; %this has to be column vector
 end
+
+%%%%%
+% the above three lines could be replaced by just one:
+%vprime=[r1*v(1)*(1-(v(1)+alpha12*v(2))/K1);r2*v(2)*(1-(v(2)+alpha21*v(1))/K2) ];
+% this works and it is efficient, but not transparent, so harder to chec
