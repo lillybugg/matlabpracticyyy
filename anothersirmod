@@ -1,0 +1,35 @@
+%Exercise 3.3 : Implement the basic SIR system of differential equations modeling the spread
+%of an infectious disease:
+%dS/dt = −a · c · S · I
+%dI/dt = a · c · S · I − γ · I
+%dR/dt = γ · I.
+%S(0) = 995, I(0) = 5, and R(0) = 0. Try parameter values a = 0.0005, c = 4, gamma = 1/5.
+%Is there an epidemic? Here epidemic means that the number of infectious individuals increases
+%at the outset. Keep a and c fixed and change the value of γ and see how the behavior of the
+%system changes.
+
+clear all
+%a=.0005 c=4 gamma=1/5 s(0) = 955 I(0)=5 r(0)=0
+clear all
+global a c gamma
+
+a=0.0005;
+c=3;
+gamma=1
+t0=0; % start time
+tf=60; %end time
+p0=[955; 5;0] %vector
+
+[t,p] = ode45(@sir_mod,[t0,tf],p0);  %call the ode solver 
+plot(t,p(:,1),t,p(:,2),t,p(:,3), 'Linewidth',2) % plot has to be different because the matrix p is 3 columns (s,i,r)
+xlabel('time')
+ylabel('population')
+legend('Susceptible (S)','Infectious (I)','Recovered (R)')
+function pprime = sir_mod(t,p)  %this is the function that defines the ode to be solved
+global a c gamma
+S=p(1); I=p(2); R=p(3);
+dS=-a*c*S*I;
+dI=a*c*S*I-gamma*I;
+dR=gamma*I;
+pprime = [dS;dI;dR]; %right side of the ode
+end
