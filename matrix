@@ -1,0 +1,7 @@
+C=[2 -1 0 -1;-1 5 -1 -1;0 -1 4 -1; -1 -1 -1 5] % 4 by 4 matrix
+b=[2 ; 1/2; 1; 1/2] %1+1/2(win_i-loss_i) this is going to be a 1 by 4 vector, to make 4 by 1 we add the semi colons 
+%or transpose with  '
+
+
+%inv(C) gives us inverse
+%C*inv(C) gives us identity, use format long?
